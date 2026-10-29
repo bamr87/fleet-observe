@@ -1,0 +1,78 @@
+# features/features.yml — THE FEATURE INDEX for fleet-observe (schema features/v1, governance kit v0.1.1).
+# One entry per capability, stable id FOBS-NNN (never reused). status: shipped | partial | planned | deprecated | tbd.
+# `prd:` links each feature to PRD.md requirements. The PRD "Feature catalog" block is generated:
+#   python3 <bamr87/bamr87>/tools/governance_lint.py prd-sync . --write
+schema: features/v1
+repo: bamr87/fleet-observe
+
+features:
+  - id: FOBS-001
+    title: "docker compose stack (otel-collector, prometheus, grafana) validates a"
+    description: "docker compose stack (otel-collector, prometheus, grafana) validates and starts."
+    implemented: true
+    status: shipped
+    prd: [FR1]
+    surface: infra
+    link: compose.yml
+    tags: [phase-1]
+    date: 2026-10-28
+  - id: FOBS-002
+    title: "Prometheus scrapes the collector's own metrics"
+    description: "Prometheus scrapes the collector's own metrics."
+    implemented: false
+    status: planned
+    prd: [FR2]
+    surface: infra
+    docs: PRD.md
+    tags: [phase-1]
+    date: 2026-10-28
+  - id: FOBS-003
+    title: "Grafana datasource and a fleet overview dashboard provisioned from fil"
+    description: "Grafana datasource and a fleet overview dashboard provisioned from files."
+    implemented: false
+    status: planned
+    prd: [FR3]
+    surface: infra
+    docs: PRD.md
+    tags: [phase-2]
+    date: 2026-10-28
+  - id: FOBS-004
+    title: "OTLP instrumentation guide and example for a fleet service"
+    description: "OTLP instrumentation guide and example for a fleet service."
+    implemented: false
+    status: planned
+    prd: [FR4]
+    surface: infra
+    docs: PRD.md
+    tags: [phase-2]
+    date: 2026-10-28
+  - id: FOBS-005
+    title: "Alerting rules for service availability"
+    description: "Alerting rules for service availability."
+    implemented: false
+    status: planned
+    prd: [FR5]
+    surface: infra
+    docs: PRD.md
+    tags: [phase-3]
+    date: 2026-10-28
+  - id: FOBS-006
+    title: "Helm deployment onto fleet-infra"
+    description: "Helm deployment onto fleet-infra."
+    implemented: false
+    status: planned
+    prd: [FR6]
+    surface: infra
+    docs: PRD.md
+    tags: [phase-3]
+    date: 2026-10-28
+  - id: FOBS-007
+    title: "Standard CI gate"
+    description: "Every push and PR runs the fleet's shared standard-ci gate."
+    implemented: true
+    status: shipped
+    prd: [NFR1]
+    surface: infra
+    link: .github/workflows/ci.yml
+    tags: [ci]
+    date: 2026-10-28

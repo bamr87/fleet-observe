@@ -1,0 +1,19 @@
+# kit: sdlc v0.2.0 — the repo's SDLC declaration (UPS-WORK-01).
+schema: sdlc/v1
+type: app
+kinds: [infra]
+tier: experiment
+backlog:
+  mode: issues
+  mirror_to_issues: false
+modules:
+  spec_driven: false
+  adr: true
+  features: true
+  issue_autopilot: false
+  content_queue: false
+  ai_lanes: true          # fleet.manifest.yml + EVOLVE_ENABLED kill switch (default off)
+adr_path: docs/adr
+release:
+  type: simple
+deviations: []
