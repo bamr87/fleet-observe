@@ -9,7 +9,14 @@ exporters:
   prometheus:
     endpoint: 0.0.0.0:8889
   debug: {}
+extensions:
+  # Readiness for scripts/smoke.sh, published on the host's 127.0.0.1 (OTEL_HEALTH_PORT, default 13133).
+  # The image has no shell, so compose cannot healthcheck it from inside. Bind 0.0.0.0 explicitly: the
+  # collector defaults to localhost, which a published port cannot reach.
+  health_check:
+    endpoint: 0.0.0.0:13133
 service:
+  extensions: [health_check]
   pipelines:
     metrics:
       receivers: [otlp]

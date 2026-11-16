@@ -7,13 +7,15 @@ repo: bamr87/fleet-observe
 
 features:
   - id: FOBS-001
-    title: "docker compose stack (otel-collector, prometheus, grafana) validates a"
-    description: "docker compose stack (otel-collector, prometheus, grafana) validates and starts."
+    title: "docker compose stack (otel-collector, prometheus, grafana)"
+    description: "docker compose stack (otel-collector, prometheus, grafana) validates (compose, collector and Prometheus configs), starts healthy and is smoke-tested."
     implemented: true
     status: shipped
     prd: [FR1]
     surface: infra
     link: compose.yml
+    docs: README.md
+    tests: [scripts/validate.sh, scripts/smoke.sh]
     tags: [phase-1]
     date: 2026-10-28
   - id: FOBS-002

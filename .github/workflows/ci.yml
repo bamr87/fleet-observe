@@ -40,3 +40,8 @@ jobs:
       - name: Validate collector and Prometheus configs
         # Same images as compose.yml (read from it), so a broken pipeline or scrape config fails here.
         run: scripts/validate.sh
+      - name: Smoke test (starts healthy, an OTLP metric reaches Prometheus)
+        # Brings the stack up as its own compose project and removes it (down -v) when done.
+        env:
+          GRAFANA_ADMIN_PASSWORD: ci-dummy
+        run: scripts/smoke.sh
