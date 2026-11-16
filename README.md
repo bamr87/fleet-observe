@@ -30,18 +30,19 @@ You need Docker with Compose v2, plus `curl` and `jq` for the scripts.
 ```bash
 cp .env.example .env              # then set GRAFANA_ADMIN_PASSWORD in .env
 scripts/validate.sh               # compose, collector and Prometheus configs, with the images compose.yml pins
-docker compose up -d --wait       # returns once Prometheus and Grafana report healthy
 scripts/smoke.sh                  # an OTLP metric reaches Prometheus, in a separate throwaway project
+docker compose up -d --wait       # your stack; returns once Prometheus and Grafana report healthy
 ```
 
 - `scripts/validate.sh` runs `docker compose config -q`, then `otelcol-contrib validate` on `otel/config.yaml` and `promtool check config` on `prometheus/prometheus.yml`, in the images compose.yml pins. It names each file that fails.
+- `scripts/smoke.sh` starts its own compose project (`fobs-smoke`), checks the collector's health endpoint, posts one OTLP/HTTP gauge with a unique name and waits until Prometheus returns that metric by name. Then it removes that project and its volumes. Your own stack is a different project, so smoke.sh never stops it or deletes its data, but both projects publish the same host ports from `.env`: run smoke.sh before `docker compose up`, as above, or follow the port note below to run it beside your stack. `--keep` leaves the smoke project running (`scripts/smoke.sh --help`).
 - `docker compose up -d --wait` starts Grafana only after Prometheus is healthy, and fails if a service does not become healthy.
-- `scripts/smoke.sh` starts its own compose project (`fobs-smoke`), checks the collector's health endpoint, posts one OTLP/HTTP gauge with a unique name and waits until Prometheus returns that metric by name. Then it removes that project and its volumes; your own stack is a different project, so it and its data are never touched. `--keep` leaves the smoke project running, and `--no-up` probes a project that is already up, named by `SMOKE_PROJECT` (`scripts/smoke.sh --help`).
+- To probe the stack you started rather than a throwaway one, run `SMOKE_PROJECT=fleet-observe scripts/smoke.sh --no-up` (`docker compose ls` shows your project's name; by default it is the directory's). With `--no-up` it neither starts nor stops anything; it leaves one `fobs_smoke_*` gauge in your Prometheus.
 - `python3 scripts/check_compose.py` checks that every port stays loopback-only and that the Grafana password stays required.
 
 CI runs `validate.sh`, `check_compose.py` and `smoke.sh` (which does the `up --wait`) on every pull request.
 
-Every published port binds `127.0.0.1` only. Each host port can be changed in `.env`; if another stack already holds a default, set a free one there (or export it before `scripts/smoke.sh`).
+Every published port binds `127.0.0.1` only. Each host port can be changed in `.env`, for example when another stack already holds a default. Your stack and smoke.sh's project both read `.env`, so a value there moves both and cannot keep them apart. To run `scripts/smoke.sh` while your own stack is up, export free `*_PORT` values for that run instead (the shell environment overrides `.env`), for example `OTEL_GRPC_PORT=14317 OTEL_HTTP_PORT=14318 OTEL_HEALTH_PORT=23133 PROMETHEUS_PORT=19090 GRAFANA_PORT=13000 scripts/smoke.sh`.
 
 | Variable | Default | Serves |
 | --- | --- | --- |
