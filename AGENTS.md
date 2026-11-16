@@ -13,9 +13,13 @@ Observability stack for the bamr87 fleet: OpenTelemetry Collector, Prometheus an
 
 ```bash
 cp .env.example .env                                   # set GRAFANA_ADMIN_PASSWORD
-GRAFANA_ADMIN_PASSWORD=x docker compose config -q      # what CI validates
+GRAFANA_ADMIN_PASSWORD=x docker compose config -q      # compose syntax (CI's first step)
 python3 scripts/check_compose.py                       # ports loopback-only, password required
+shellcheck scripts/*.sh                                # lint the scripts
+scripts/validate.sh                                    # compose, otel/config.yaml and prometheus.yml, in the pinned images
 ```
+
+Image tags live only in `compose.yml`; the scripts read them from there, so never repeat a tag elsewhere.
 
 Every published port is `"127.0.0.1:${NAME_PORT:-<default>}:<container>"` (hub UPS-REPO-34); never add a bare `N:N` mapping.
 
@@ -27,6 +31,7 @@ Every published port is `"127.0.0.1:${NAME_PORT:-<default>}:<container>"` (hub U
 - `.github/` — CI, the `@claude` handler, the `evolve` lane (off by default), issue forms
 - `.claude/agents/builder.md` — the role the evolve lane runs as
 - `scripts/check_compose.py` — CI guard for compose.yml's port binding and Grafana credential
+- `scripts/validate.sh` — validates compose.yml, the collector config and the Prometheus config with the pinned images (CI runs it)
 - `.env.example` — every compose variable, no real values (copy to the git-ignored `.env`)
 - everything else — the opentelemetry, prometheus skeleton
 

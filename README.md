@@ -27,9 +27,12 @@ Collects telemetry from ragio-ai, fredgar-ai, law-ai and the hub's fleet activit
 
 ```bash
 cp .env.example .env              # then set GRAFANA_ADMIN_PASSWORD in .env
+scripts/validate.sh               # compose, collector and Prometheus configs, with the images compose.yml pins
 docker compose up -d
 python3 scripts/check_compose.py  # ports loopback-only, Grafana password required
 ```
+
+`scripts/validate.sh` runs `docker compose config -q`, then `otelcol-contrib validate` on `otel/config.yaml` and `promtool check config` on `prometheus/prometheus.yml`, in the images compose.yml pins. It needs Docker and `jq`, and it names each file that fails. CI runs it on every pull request.
 
 Every published port binds `127.0.0.1` only; the host port is overridable in `.env`. Compose refuses to start until `GRAFANA_ADMIN_PASSWORD` is set, so Grafana never runs with its default `admin`/`admin` login, and self sign-up is off.
 

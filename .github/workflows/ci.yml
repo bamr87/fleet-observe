@@ -35,3 +35,8 @@ jobs:
         run: 'docker compose config -q'
       - name: Check port binding and Grafana credential
         run: python3 scripts/check_compose.py
+      - name: Lint scripts
+        run: shellcheck scripts/*.sh
+      - name: Validate collector and Prometheus configs
+        # Same images as compose.yml (read from it), so a broken pipeline or scrape config fails here.
+        run: scripts/validate.sh
