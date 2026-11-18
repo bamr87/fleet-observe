@@ -3,6 +3,8 @@
 
 # fleet-observe
 
+> fleet-observe's direction is to become the ultimate open home for all things fleet observability: data, tools, resources and transparency, with OpenTelemetry, Prometheus and Grafana wired for every fleet service, for everyone ([constitution](docs/constitution.md) §1).
+
 ## What this repo is
 
 Observability stack for the bamr87 fleet: OpenTelemetry Collector, Prometheus and Grafana, wired for every fleet service. Metrics, traces and dashboards for the whole fleet from one compose file, ready to move onto the fleet-infra cluster.
@@ -12,8 +14,20 @@ Observability stack for the bamr87 fleet: OpenTelemetry Collector, Prometheus an
 ## Stack & commands
 
 ```bash
-docker compose config -q
+cp .env.example .env                                   # set GRAFANA_ADMIN_PASSWORD
+GRAFANA_ADMIN_PASSWORD=x docker compose config -q      # compose syntax (CI's first step)
+python3 scripts/check_compose.py                       # ports loopback-only, password required
+shellcheck scripts/*.sh                                # lint the scripts
+scripts/validate.sh                                    # compose, otel/config.yaml and prometheus.yml, in the pinned images
+scripts/smoke.sh                                       # starts healthy, an OTLP metric reaches Prometheus (own project, removed after)
+docker compose up -d --wait                            # run the stack; `down` keeps data, `down -v` deletes it
 ```
+
+Image tags live only in `compose.yml`; the scripts read them from there, so never repeat a tag elsewhere.
+
+Every published port is `"127.0.0.1:${NAME_PORT:-<default>}:<container>"` (hub UPS-REPO-34); never add a bare `N:N` mapping. A new port also gets its variable in `.env.example` and a row in the README table.
+
+`scripts/smoke.sh` runs as compose project `fobs-smoke` and removes it with `down -v` when it ends (unless `--keep` or `--no-up`), so never point `SMOKE_PROJECT` at a stack whose data you want to keep. When the default ports are taken (on a machine that also runs the hub's observability plane, it holds 4317, 4318 and 9090), export free ones first, for example `OTEL_GRPC_PORT=14317 OTEL_HTTP_PORT=14318 PROMETHEUS_PORT=19090 GRAFANA_PORT=13000 OTEL_HEALTH_PORT=23133`.
 
 ## Layout
 
@@ -22,6 +36,10 @@ docker compose config -q
 - `PRD.md` — requirements (FRn/NFRn) and the phased roadmap
 - `.github/` — CI, the `@claude` handler, the `evolve` lane (off by default), issue forms
 - `.claude/agents/builder.md` — the role the evolve lane runs as
+- `scripts/check_compose.py` — CI guard for compose.yml's port binding and Grafana credential
+- `scripts/validate.sh` — validates compose.yml, the collector config and the Prometheus config with the pinned images (CI runs it)
+- `scripts/smoke.sh` — starts the stack in its own project, waits for it to be healthy and proves an OTLP metric reaches Prometheus (CI runs it)
+- `.env.example` — every compose variable, no real values (copy to the git-ignored `.env`)
 - everything else — the opentelemetry, prometheus skeleton
 
 ## Conventions

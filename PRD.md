@@ -12,6 +12,17 @@ Metrics, traces and dashboards for the whole fleet from one compose file, ready 
 | --- | --- | --- |
 | 0.1 | 2026-10-28 | Initial requirements and phased roadmap (repo foundation). |
 
+
+## 1.1 Missions
+
+fleet-observe's direction is to become the ultimate open home for all things fleet observability — data, tools, resources and transparency, gathered in one place that anyone can inspect and reuse.
+
+1. **Provide data, tools, resources and transparency for all stakeholders, operators, observability practitioners and the general public.** Operators, service owners, learners, and the general public are first-class audiences. The aim is a shared, open commons: the same sources, the same tools, and the same trail of evidence for everyone.
+2. **Make metrics, traces and dashboards for the whole fleet available from one compose file, ready to move onto the fleet-infra cluster.** The path starts with OpenTelemetry Collector, Prometheus and Grafana, kept inspectable and reproducible.
+3. **Put that telemetry in every operator's hands, wired for every fleet service.** Collect from services such as ragio-ai, fredgar-ai, law-ai and the hub's fleet activity log, complementary to the hub's ELK kit — an open toolkit for working with all things fleet observability.
+
+These missions set the course; they do not claim the work is finished. They serve the existing constitution and PRD purpose: one compose file of metrics, traces and dashboards for the fleet. The earlier mission paragraph is absorbed into these three. Every feature must trace to them.
+
 ## 2. Goals
 
 - Run OTel Collector + Prometheus + Grafana locally with one command
@@ -58,13 +69,14 @@ Every user-facing capability has a stable id in the feature catalog [`features/f
 
 | ID | Feature | Status | Where | Requirements |
 | --- | --- | --- | --- | --- |
-| [FOBS-001](features/features.yml) | docker compose stack (otel-collector, prometheus, grafana) validates a | shipped | [`compose.yml`](compose.yml) | FR1 |
+| [FOBS-001](features/features.yml) | docker compose stack (otel-collector, prometheus, grafana) | shipped | [`compose.yml`](compose.yml) · [`README.md`](README.md) | FR1 |
 | [FOBS-002](features/features.yml) | Prometheus scrapes the collector's own metrics | planned | [`PRD.md`](PRD.md) | FR2 |
 | [FOBS-003](features/features.yml) | Grafana datasource and a fleet overview dashboard provisioned from fil | planned | [`PRD.md`](PRD.md) | FR3 |
 | [FOBS-004](features/features.yml) | OTLP instrumentation guide and example for a fleet service | planned | [`PRD.md`](PRD.md) | FR4 |
 | [FOBS-005](features/features.yml) | Alerting rules for service availability | planned | [`PRD.md`](PRD.md) | FR5 |
 | [FOBS-006](features/features.yml) | Helm deployment onto fleet-infra | planned | [`PRD.md`](PRD.md) | FR6 |
 | [FOBS-007](features/features.yml) | Standard CI gate | shipped | [`.github/workflows/ci.yml`](.github/workflows/ci.yml) | NFR1 |
+| [FOBS-008](features/features.yml) | Missions in constitution §1 | planned | [`docs/constitution.md`](docs/constitution.md) | §1.1 |
 
 **Requirement → feature trace**
 
@@ -77,4 +89,5 @@ Every user-facing capability has a stable id in the feature catalog [`features/f
 | FR5 | FOBS-005 |
 | FR6 | FOBS-006 |
 | NFR1 | FOBS-007 |
+| §1.1 | FOBS-008 |
 <!-- features:end -->
