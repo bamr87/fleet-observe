@@ -26,8 +26,23 @@ Collects telemetry from ragio-ai, fredgar-ai, law-ai and the hub's fleet activit
 ## Quick start
 
 ```bash
-docker compose config -q
+cp .env.example .env              # then set GRAFANA_ADMIN_PASSWORD in .env
+docker compose up -d
+python3 scripts/check_compose.py  # ports loopback-only, Grafana password required
 ```
+
+Every published port binds `127.0.0.1` only; the host port is overridable in `.env`. Compose refuses to start until `GRAFANA_ADMIN_PASSWORD` is set, so Grafana never runs with its default `admin`/`admin` login, and self sign-up is off.
+
+| Variable | Default | Service |
+| --- | --- | --- |
+| `OTEL_GRPC_PORT` | `4317` | OTel Collector, OTLP gRPC |
+| `OTEL_HTTP_PORT` | `4318` | OTel Collector, OTLP HTTP |
+| `PROMETHEUS_PORT` | `9090` | Prometheus |
+| `GRAFANA_PORT` | `3000` | Grafana |
+| `GRAFANA_ADMIN_USER` | `admin` | Grafana admin login |
+| `GRAFANA_ADMIN_PASSWORD` | _required_ | Grafana admin password |
+
+Remote or cluster exposure belongs to the Helm deployment (FOBS-006), not this compose file.
 
 ## How it grows
 

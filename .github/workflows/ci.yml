@@ -28,4 +28,10 @@ jobs:
     timeout-minutes: 20
     steps:
       - uses: actions/checkout@v7
-      - run: 'docker compose config -q'
+      - name: Validate compose
+        # compose.yml requires GRAFANA_ADMIN_PASSWORD (`:?`), so CI supplies a dummy.
+        env:
+          GRAFANA_ADMIN_PASSWORD: ci-dummy
+        run: 'docker compose config -q'
+      - name: Check port binding and Grafana credential
+        run: python3 scripts/check_compose.py

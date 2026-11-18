@@ -12,8 +12,12 @@ Observability stack for the bamr87 fleet: OpenTelemetry Collector, Prometheus an
 ## Stack & commands
 
 ```bash
-docker compose config -q
+cp .env.example .env                                   # set GRAFANA_ADMIN_PASSWORD
+GRAFANA_ADMIN_PASSWORD=x docker compose config -q      # what CI validates
+python3 scripts/check_compose.py                       # ports loopback-only, password required
 ```
+
+Every published port is `"127.0.0.1:${NAME_PORT:-<default>}:<container>"` (hub UPS-REPO-34); never add a bare `N:N` mapping.
 
 ## Layout
 
@@ -22,6 +26,8 @@ docker compose config -q
 - `PRD.md` — requirements (FRn/NFRn) and the phased roadmap
 - `.github/` — CI, the `@claude` handler, the `evolve` lane (off by default), issue forms
 - `.claude/agents/builder.md` — the role the evolve lane runs as
+- `scripts/check_compose.py` — CI guard for compose.yml's port binding and Grafana credential
+- `.env.example` — every compose variable, no real values (copy to the git-ignored `.env`)
 - everything else — the opentelemetry, prometheus skeleton
 
 ## Conventions
