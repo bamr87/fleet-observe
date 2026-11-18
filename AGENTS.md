@@ -3,6 +3,8 @@
 
 # fleet-observe
 
+> fleet-observe's direction is to become the ultimate open home for all things fleet observability: data, tools, resources and transparency, with OpenTelemetry, Prometheus and Grafana wired for every fleet service, for everyone ([constitution](docs/constitution.md) §1).
+
 ## What this repo is
 
 Observability stack for the bamr87 fleet: OpenTelemetry Collector, Prometheus and Grafana, wired for every fleet service. Metrics, traces and dashboards for the whole fleet from one compose file, ready to move onto the fleet-infra cluster.

@@ -6,9 +6,17 @@
 > Agents read this before [AGENTS.md](../AGENTS.md) conventions, the [PRD](../PRD.md), or the
 > [feature catalog](../features/features.yml). Ratified by merged PR; amended only per § 8.
 
-## 1. Mission
+## 1. Missions
 
-Metrics, traces and dashboards for the whole fleet from one compose file, ready to move onto the fleet-infra cluster. It is a learning-first portfolio project in the bamr87 fleet: Collects telemetry from ragio-ai, fredgar-ai, law-ai and the hub's fleet activity log; complements the hub's ELK kit.
+fleet-observe's direction is to become the ultimate open home for all things fleet observability — data, tools, resources and transparency, gathered in one place that anyone can inspect and reuse.
+
+1. **Provide data, tools, resources and transparency for all stakeholders, operators, observability practitioners and the general public.** Operators, service owners, learners, and the general public are first-class audiences. The aim is a shared, open commons: the same sources, the same tools, and the same trail of evidence for everyone.
+2. **Make metrics, traces and dashboards for the whole fleet available from one compose file, ready to move onto the fleet-infra cluster.** The path starts with OpenTelemetry Collector, Prometheus and Grafana, kept inspectable and reproducible.
+3. **Put that telemetry in every operator's hands, wired for every fleet service.** Collect from services such as ragio-ai, fredgar-ai, law-ai and the hub's fleet activity log, complementary to the hub's ELK kit — an open toolkit for working with all things fleet observability.
+
+These missions set the course; they do not claim the work is finished. They serve the existing constitution and PRD purpose: one compose file of metrics, traces and dashboards for the fleet. The earlier mission paragraph is absorbed into these three. Every feature must trace to them.
+
+_Source: [../PRD.md](../PRD.md) §1.1._
 
 ## 2. Invariants (non-negotiable)
 

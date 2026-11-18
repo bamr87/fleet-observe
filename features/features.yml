@@ -78,3 +78,11 @@ features:
     link: .github/workflows/ci.yml
     tags: [ci]
     date: 2026-10-28
+  - id: FOBS-008
+    title: "Missions in constitution §1"
+    description: "Three product missions under one direction statement, ratified through amendment 0002."
+    implemented: false
+    status: planned
+    prd: ["§1.1"]
+    surface: docs
+    docs: "docs/constitution.md"
