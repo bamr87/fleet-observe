@@ -58,7 +58,7 @@ Every user-facing capability has a stable id in the feature catalog [`features/f
 
 | ID | Feature | Status | Where | Requirements |
 | --- | --- | --- | --- | --- |
-| [FOBS-001](features/features.yml) | docker compose stack (otel-collector, prometheus, grafana) validates a | shipped | [`compose.yml`](compose.yml) | FR1 |
+| [FOBS-001](features/features.yml) | docker compose stack (otel-collector, prometheus, grafana) | shipped | [`compose.yml`](compose.yml) · [`README.md`](README.md) | FR1 |
 | [FOBS-002](features/features.yml) | Prometheus scrapes the collector's own metrics | planned | [`PRD.md`](PRD.md) | FR2 |
 | [FOBS-003](features/features.yml) | Grafana datasource and a fleet overview dashboard provisioned from fil | planned | [`PRD.md`](PRD.md) | FR3 |
 | [FOBS-004](features/features.yml) | OTLP instrumentation guide and example for a fleet service | planned | [`PRD.md`](PRD.md) | FR4 |
